@@ -55,6 +55,7 @@ app.post('/object', function (req, res) {   // area for improvement: improper JS
 
     var key = keys[0]
     var value = req.body[key]
+    key = key.trim()
     var timestamp = new Date().getTime()
     db.collection('datastore').save({ 'key': key, 'value': value, 'timestamp': timestamp }, (err, result) => {
         if (err) {
