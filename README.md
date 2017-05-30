@@ -14,6 +14,7 @@ POST is used to insert a new record to the store and GET is used to retrieve a v
 * For POST request all key, value and timestamp will be returned after successful insertion into DB
 * When timestamp is provided as a query string in the GET request, the last record before but not equal to the timestamp will be returned
 * Key cannot contain leading or trailing white spaces as it will be use as part of the URL
+* Key cannot contain the following characters: ~`!#$%^&*+=-[]';,/{}|\":<>?
 ### Server URL
 http://haidongfu.space:3000
 ### Get Request Handler

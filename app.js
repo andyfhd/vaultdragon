@@ -46,6 +46,10 @@ app.get('/object/:key', function (req, res) {
     })
 })
 
+function isValidKey(str) {
+    return !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str);
+}
+
 app.post('/object', function (req, res) {   // area for improvement: improper JSON format is handled by body-parser, should intercept and provide custom error message
     var keys = Object.keys(req.body)
     if (keys.length !== 1) {
@@ -56,13 +60,19 @@ app.post('/object', function (req, res) {   // area for improvement: improper JS
     var key = keys[0]
     var value = req.body[key]
     key = key.trim()
+
+    if (!isValidKey(key)) {
+        return res.send("Key contains illegal characters")
+    }
+
     var timestamp = new Date().getTime()
     db.collection('datastore').save({ 'key': key, 'value': value, 'timestamp': timestamp }, (err, result) => {
         if (err) {
             console.log(err)    // area for improvement: should use production level logging
             res.statusCode = 500
             return res.send(err)    // area for improvement: should consider using custom error message
-        } else {
+        }
+        else {
             return res.send('New record successfully saved to database\n\nkey: ' + key + '\nvalue: ' + value + '\ntimestamp: ' + timestamp)
         }
     })
